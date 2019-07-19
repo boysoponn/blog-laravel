@@ -22,7 +22,7 @@ class PostController extends Controller
     public function postByCate($id)
     {
         $category = Category::find($id);
-        $postList = Post::where('category_id',$id)->latest()->paginate(10);
+        $postList = Post::with(['user','comment'])->where('category_id',$id)->latest()->paginate(10);
         return view('category',[
             'category' => $category,
             'postList' => $postList
@@ -32,7 +32,7 @@ class PostController extends Controller
     public function index($id)
     {
         $post = Post::find($id);
-        $commentList = Comment::where('post_id',$id)
+        $commentList = Comment::with('user','user.post','user.comment')->where('post_id',$id)
         ->paginate(5);
         return view('post',[
             'post' => $post,

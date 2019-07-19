@@ -26,7 +26,7 @@ class UserController extends Controller
     }
     public function userComment()
     {
-        $commentList = Comment::where('user_id',(Auth::user()->user_id))
+        $commentList = Comment::with(['post','post.category'])->where('user_id',(Auth::user()->user_id))
         ->paginate(10);
         return view('userComment',[
             'commentList' => $commentList

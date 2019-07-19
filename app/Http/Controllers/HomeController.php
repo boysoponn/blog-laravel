@@ -12,8 +12,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $postList = Post::limit(10)->latest()->get();
-        $cateList = Category::with(['lastpost', 'lastpost.user','comments'])->get();
+        $postList = Post::with(['category','comment','user'])->limit(10)->latest()->get();
+        $cateList = Category::with(['lastpost', 'lastpost.user','comments','post'])->get();
         return view('home',[
             'postList' => $postList,
             'cateList' => $cateList

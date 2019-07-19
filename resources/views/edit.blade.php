@@ -8,6 +8,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('post',['id' => $post->post_id])}}">{{Str::limit($post->title,10)}}</a></li>
                     </ol>
                 </nav>
                 @if ($errors->any())
