@@ -21,6 +21,10 @@
                             <div class="col-2">
                                 <a href="{{route('category',['id' => $post->category->category_id])}}">{{$post->category->name}}</a>
                             </div>
+                        @else
+                            <div class="col-2">
+                                <a>ไม่ระบุประเภท</a>
+                            </div>
                         @endif
                             <div class="col-2">
                                 @if (isset($post->created_at) && !empty($post->created_at))

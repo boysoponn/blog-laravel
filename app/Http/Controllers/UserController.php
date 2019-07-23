@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserEmailForm;
+use App\Http\Requests\UserPasswordForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -18,18 +20,22 @@ class UserController extends Controller
 
     public function userPost()
     {
-        $PostList = Post::where('user_id',(Auth::user()->user_id))
+        $user = Auth::user()->user_id;
+        $PostList = Post::where('user_id',$user)
         ->paginate(10);
         return view('userPost',[
-            'PostList' => $PostList
+            'PostList' => $PostList,
+            'user' => $user 
         ]);
     }
     public function userComment()
     {
-        $commentList = Comment::with(['post','post.category'])->where('user_id',(Auth::user()->user_id))
+        $user = Auth::user()->user_id;
+        $commentList = Comment::with(['post','post.category'])->where('user_id',$user)
         ->paginate(10);
         return view('userComment',[
-            'commentList' => $commentList
+            'commentList' => $commentList,
+            'user' => $user 
         ]);
     }
     public function userEditEmail()
@@ -39,12 +45,8 @@ class UserController extends Controller
             'user' => $user
         ]);
     }
-    public function userEditEmailSuccess(Request $request)
+    public function userEditEmailSuccess(UserEmailForm $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
         $user = User::find(Auth::user()->user_id);
         if (Hash::check($request->password, $user->password)) {
             if(User::where('email',$request->email)->count() === 0){
@@ -52,10 +54,10 @@ class UserController extends Controller
                     'email' => $request->email
                 ]);
             }else{
-                return redirect()->back()->withInput()->withErrors(['email_replace'=> 'ที่อยู่อีเมลนี้ ถูกใช้งานไปแล้ว']);
+                return redirect()->back()->withErrors(['email_replace'=> 'ที่อยู่อีเมลนี้ ถูกใช้งานไปแล้ว']);
             }
         }else{
-            return redirect()->back()->withInput()->withErrors(['password_wrong'=> 'รหัสผ่านไม่ถูกต้อง']);
+            return redirect()->back()->withErrors(['password_wrong'=> 'รหัสผ่านไม่ถูกต้อง']);
         }
         return redirect(route('userData',['id' => Auth::user()->user_id]));
     }
@@ -68,14 +70,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function userEditPasswordSuccess(Request $request)
+    public function userEditPasswordSuccess(UserPasswordForm $request)
     {
-        $request->validate([
-            'oldpassword' => 'required',
-            'newpassword' => 'required|min:8',
-            'confirmpassword' => 'required|same:newpassword|min:8',
-        ]);
-
         $user = User::find(Auth::user()->user_id);
         if (Hash::check($request->oldpassword, $user->password)) {
             User::where('user_id',Auth::user()->user_id)

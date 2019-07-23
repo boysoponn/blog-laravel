@@ -15,9 +15,6 @@
     @endif        
     <hr>
     <h2>ประเภท</h2>
-    @if (Auth::check())
-        <a href="{{route('cate')}}"><button type="button"  class="btn btn-primary">เพิ่มประเภท</button></a>
-    @endif
     <hr>
     @if($cateList->isNotEmpty())
         <div class="container">

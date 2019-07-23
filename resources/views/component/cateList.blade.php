@@ -22,14 +22,21 @@
                             </div>
                             @endif
                             <div class="col-2">
-                                @if($cate->lastpost)
-                                <small> ล่าสุด {{$cate->lastpost->created_at->locale('th')->diffForHumans()}} โดย 
+                                
+                                <small> 
+                                    @if($cate->lastpost->created_at)
+                                        ล่าสุด {{$cate->lastpost->created_at->locale('th')->diffForHumans()}} 
+                                    @endif
+                                    @if(isset($cate->lastpost->user->user_id) && !empty($cate->lastpost->user->user_id) && isset($cate->lastpost->user->name) && !empty($cate->lastpost->user->name))
                                     <a href="{{Route('userData',['id' => $cate->lastpost->user->user_id])}}">
-                                        {{$cate->lastpost->user->name}}
+                                       โดย  {{$cate->lastpost->user->name}}
                                     </a>
-                                    หัวข้อ {{$cate->lastpost->title}}
+                                    @endif
+                                    @if($cate->lastpost->title && $cate->lastpost->title)
+                                        หัวข้อ {{$cate->lastpost->title}}
+                                    @endif
                                 </small>
-                                @endif
+                                
                             </div>
                         </div>
                     </div>

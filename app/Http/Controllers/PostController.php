@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\PostForm;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
@@ -36,7 +37,8 @@ class PostController extends Controller
         ->paginate(5);
         return view('post',[
             'post' => $post,
-            'commentList' => $commentList
+            'commentList' => $commentList,
+            'admin' => Auth::guard('admin')->check()
         ]);
     }
     public function addPost($id)
@@ -52,13 +54,8 @@ class PostController extends Controller
             return redirect(route('login'));
         }
     }
-    public function addPostSuccess(Request $request)
+    public function addPostSuccess(PostForm $request)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'content' => 'required',
-            'category' => 'required',
-        ]);
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
@@ -89,13 +86,8 @@ class PostController extends Controller
         } 
     }
 
-    public function editPostSuccess($id,Request $request)
+    public function editPostSuccess($id,PostForm $request)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'content' => 'required',
-            'category' => 'required',
-        ]);
         $post = Post::find($id);
         $post->update([
             'title' => $request->title,
@@ -117,6 +109,27 @@ class PostController extends Controller
             }
         }
         return redirect(route('home'));
+    }
+
+    public function  deletePostByadmin($id){
+        if(Auth::guard('admin')->check()){
+          $post = Post::find($id);
+          if(isset($post)){    
+            Post::find($id)->delete();
+            Comment::where('post_id',$id)->delete();  
+          }
+        }
+        return redirect(route('home'));
+      }
+  
+    public function  deleteCommentByadmin($id){
+        if(Auth::guard('admin')->check()){
+          $comment = Comment::find($id);
+          if(isset($comment)){    
+            Comment::find($id)->delete();
+          }
+        }
+        return redirect()->back();
     }
 
 }

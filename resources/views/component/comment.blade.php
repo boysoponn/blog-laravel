@@ -11,7 +11,14 @@
                 @endif
                 @if (isset($comment->user->post) && !empty($comment->user->comment))
                     <small>จำนวนกระทู้ {{$comment->user->post->count()+$comment->user->comment->count()}}</small>
-                    @endif
+                @endif
+                @if ($admin)
+                    <div style="margin-bottom:20px">
+                        @if (isset($comment->comment_id) && !empty($comment->comment_id))
+                            <a href="{{route('deleteCommentByadmin',['id' => $comment->comment_id])}}"><button type="button"  class="btn btn-danger">ลบความเห็น</button></a>
+                        @endif
+                    </div>  
+                @endif
             </div>
         </div>
     @endif    

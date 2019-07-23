@@ -35,9 +35,12 @@
                 <p>ยังไม่มีข้อมูล</p>
             @endif    
         </div>
-        <div class="col-2"> 
-                @include('component.sidebar',['id' => $post->user->user_id])
-        </div>
+        @if ($user)
+            <div class="col-2"> 
+                @include('component.sidebar',['id' => $user])
+            </div>
+        @endif
+
     </div>
 </div> 
 @if($PostList->isNotEmpty())

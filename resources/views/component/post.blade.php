@@ -9,6 +9,13 @@
             </div>  
         @endif
     @endif
+    @if ($admin)
+        <div style="margin-bottom:20px">
+            @if (isset($post->post_id) && !empty($post->post_id))
+                <a href="{{route('deletePostByadmin',['id' => $post->post_id])}}"><button type="button"  class="btn btn-danger">ลบกระทู้</button></a>
+            @endif
+        </div>  
+    @endif
     <div class="card">
         <div class="card-body">
             @if (isset($post->title) && !empty($post->title))

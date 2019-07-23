@@ -7,19 +7,10 @@
         </ol>
     </nav>
     <div class="container">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
         <div class="row">
             <div class="col-10">
                 แก้ไขข้อมูลส่วนตัว
-                <form method="POST" action="{{route('userEditPasswordSuccess')}}">
+                <form method="POST" id="userEditPassword" action="{{route('userEditPasswordSuccess')}}">
                     @csrf
                     <div class="form-group">
                         ชื่อ : {{$user->name}}
@@ -45,3 +36,14 @@
         </div>
     </div>      
 @endsection
+
+@section('script')
+<!-- Javascript Requirements -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- Laravel Javascript Validation -->
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+
+{!! JsValidator::formRequest('App\Http\Requests\UserPasswordForm','#userEditPassword')!!}
+@endsection 

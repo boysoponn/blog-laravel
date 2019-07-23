@@ -15,12 +15,19 @@
                         @if (isset($comment) && !empty($comment))
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="container">
                                         <div class="row">
                                             <div class="col-4">
+                                                @if (isset($comment->post->category->category_id) && !empty($comment->post->category->category_id) && isset($comment->post->category->name) && !empty($comment->post->category->name))
                                                     <a href="{{route('category',['id'=>$comment->post->category->category_id])}}">{{$comment->post->category->name}}</a>
+                                                @else
+                                                    <a>ไม่ระบุประเภท</a>
+                                                @endif
                                                     >
+                                                @if (isset($comment->post->post_id) && !empty($comment->post->post_id) && isset($comment->post->title) && !empty($comment->post->title))
                                                     <a href="{{route('post',['id'=>$comment->post->post_id])}}">{{Str::limit($comment->post->title,20)}}</a>
+                                                @else
+                                                    <a>ไม่ทราบกระทู้</a>
+                                                @endif
                                             </div>
                                             <div class="col-4">
                                                 {{Str::limit($comment->content, 30)}}
@@ -29,7 +36,6 @@
                                                 {{$comment->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL')}}
                                             </div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -38,9 +44,11 @@
                     <p>ยังไม่มีข้อมูล</p>
                 @endif
             </div>
-            <div class="col-2"> 
-                    @include('component.sidebar',['id' => $comment->user->user_id])
-            </div>
+            @if ($user)
+                <div class="col-2"> 
+                        @include('component.sidebar',['id' => $user])
+                </div>
+            @endif
         </div>
     </div>     
     @if($commentList->isNotEmpty())

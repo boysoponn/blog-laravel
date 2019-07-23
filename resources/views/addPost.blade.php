@@ -6,16 +6,7 @@
             <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
         </ol>
     </nav>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-        <form method="POST" action="{{route('addPostSuccess')}}">
+        <form method="POST" id="addpost" action="{{route('addPostSuccess')}}">
                 @csrf
                 <div class="form-group">
                     <label for="title">ชื่อกระทู้</label>
@@ -42,4 +33,15 @@
                     <button type="submit">ยืนยัน</button>
                 </div>
             </form>
+    @endsection 
+
+    @section('script')
+    <!-- Javascript Requirements -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!-- Laravel Javascript Validation -->
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+
+    {!! JsValidator::formRequest('App\Http\Requests\PostForm','#addpost')!!}
     @endsection 

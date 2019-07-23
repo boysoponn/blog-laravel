@@ -11,16 +11,7 @@
                         <li class="breadcrumb-item"><a href="{{route('post',['id' => $post->post_id])}}">{{Str::limit($post->title,10)}}</a></li>
                     </ol>
                 </nav>
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <form method="POST" action="{{route('editPostSuccess',['id' => $post->post_id])}}">
+                <form method="POST" id="edit" action="{{route('editPostSuccess',['id' => $post->post_id])}}">
                     @csrf
                     <div class="form-group">
                         <label for="title">หัวข้อ</label>
@@ -56,3 +47,14 @@
         <a href="{{route('login')}}"><button type="button"  class="btn btn-primary">เข้าสู่ระบบ</button></a>
     @endsection  
 @endif
+
+@section('script')
+<!-- Javascript Requirements -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- Laravel Javascript Validation -->
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+
+{!! JsValidator::formRequest('App\Http\Requests\PostForm','#edit')!!}
+@endsection 
