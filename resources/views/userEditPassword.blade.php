@@ -13,7 +13,12 @@
                 <form method="POST" id="userEditPassword" action="{{route('userEditPasswordSuccess')}}">
                     @csrf
                     <div class="form-group">
-                        ชื่อ : {{$user->name}}
+                        ชื่อ : 
+                        @if (isset($user->name) && !empty($user->name))
+                            {{$user->name}}
+                        @else
+                            ไม่ทราบชื่อ
+                        @endif
                     </div> 
                     <div class="form-group">
                         <label for="old Password">รหัสผ่านเดิม</label>

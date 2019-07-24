@@ -12,7 +12,7 @@ class Ban extends Model
     protected $table = 'ban';
     protected $primaryKey = 'ban_id';
     protected $fillable = [
-        'user_id', 'description', 'cancel_at'
+        'user_id', 'description', 'cancel_at','admin_id','time'
     ];
 
     protected $casts = [
@@ -22,5 +22,10 @@ class Ban extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User','user_id');
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo('App\Models\Admin','admin_id');
     }
 }

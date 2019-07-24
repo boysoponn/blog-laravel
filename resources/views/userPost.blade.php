@@ -17,14 +17,18 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-5">
-                                    <a href="{{route('post',['id'=>$post->post_id])}}">{{Str::limit($post->title, 50)}}</a>
+                                    @if (isset($post->post_id) && !empty($post->post_id) && isset($post->title) && !empty($post->title))
+                                        <a href="{{route('post',['id'=>$post->post_id])}}">{{Str::limit($post->title, 50)}}</a>
+                                    @endif
                                 </div>
                                 <div class="col-4">
                                     {{$post->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL')}}
                                 </div>
                                 <div class="col-3">
-                                    <a href="{{route('editPost',['id' => $post->post_id])}}"><button type="button"  class="btn btn-primary">แก้ไขกระทู้</button></a>
-                                    <a href="{{route('deletePost',['id' => $post->post_id])}}"><button type="button"  class="btn btn-danger">ลบกระทู้</button></a>
+                                    @if (isset($post->post_id) && !empty($post->post_id))
+                                        <a href="{{route('editPost',['id' => $post->post_id])}}"><button type="button"  class="btn btn-primary">แก้ไขกระทู้</button></a>
+                                        <a href="{{route('deletePost',['id' => $post->post_id])}}"><button type="button"  class="btn btn-danger">ลบกระทู้</button></a>
+                                    @endif
                                 </div> 
                             </div>
                         </div>

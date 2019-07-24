@@ -1,5 +1,5 @@
 @if (isset($post) && !empty($post))
-    @if (Auth::check())
+    @if (Auth::guard('web')->check())
         @if ($post->user->user_id === Auth::user()->user_id)
             <div style="margin-bottom:20px">
                 @if (isset($post->post_id) && !empty($post->post_id))

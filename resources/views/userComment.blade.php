@@ -30,10 +30,14 @@
                                                 @endif
                                             </div>
                                             <div class="col-4">
-                                                {{Str::limit($comment->content, 30)}}
+                                                @if (isset($comment->content) && !empty($comment->content))
+                                                    {{Str::limit($comment->content, 30)}}
+                                                @endif
                                             </div>
                                             <div class="col-4">
-                                                {{$comment->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL')}}
+                                                @if (isset($comment->created_at) && !empty($comment->created_at))
+                                                    {{$comment->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL')}}
+                                                @endif
                                             </div>
                                         </div>
                                 </div>

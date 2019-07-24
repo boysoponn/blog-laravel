@@ -8,6 +8,21 @@
     @endif
 @endif
 @if (Auth::guard('admin')->check())
-    <a href="{{route('adminBan',['id' => $user->user_id])}}"><button type="button"  class="btn btn-danger">ระงับการใช้งาน</button></a>
+    @if ($user->ban)
+    <div style="text-align: center;">
+        <p>อยู่รหว่างระงับการใช้งาน</p> 
+        <p>หมดระยะเวลา</p> 
+        @if (isset($user->ban->cancel_at) && !empty($user->ban->cancel_at))
+            <p style="font-size:25px;">{{$user->ban->cancel_at->locale('th')->diffForHumans()}}</p>
+        @endif
+        @if (isset($user->ban->ban_id) && !empty($user->ban->ban_id))
+            <a href="{{route('adminBanCancel',['id' => $user->ban->ban_id])}}"><button type="button"  class="btn btn-success">ปลดการระงับใช้งาน</button></a> 
+        @endif
+    </div>
+    @else
+        @if (isset($user->user_id) && !empty($user->user_id))
+            <a href="{{route('adminBan',['id' => $user->user_id])}}"><button type="button"  class="btn btn-danger">ระงับการใช้งาน</button></a>
+        @endif
+    @endif
 @endif
 

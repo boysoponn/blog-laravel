@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 
-@if (Auth::check())
+@if (Auth::guard('web')->check())
     @if (isset($post)&&!empty($post))
         @if (Auth::user()->user_id === $post->user->user_id)
             @section('content')
@@ -15,11 +15,11 @@
                     @csrf
                     <div class="form-group">
                         <label for="title">หัวข้อ</label>
-                    <input type="text" class="form-control" id="title" name="title" value="{{$post->title}}">
+                    <input type="text" class="form-control" id="title" name="title" @if (isset($post->title) && !empty($post->title)) value="{{$post->title}}" @endif >
                     </div>
                     <div class="form-group">
                         <label for="content">เนื้อหา</label>
-                        <textarea class="form-control" id="content"name="content" rows="15">{{$post->content}}</textarea>
+                        <textarea class="form-control" id="content"name="content" rows="15">@if (isset($post->content) && !empty($post->content)) {{$post->content}} @endif</textarea>
                     </div>
                     <div class="form-group">
                         <div class="input-group">

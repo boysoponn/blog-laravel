@@ -30,4 +30,9 @@ class User extends Authenticatable
     public function comment(){
         return $this->hasMany('App\Models\Comment','user_id');
     }
+
+    public function ban()
+    {
+        return $this->hasOne('App\Models\Ban','user_id');
+    }
 }

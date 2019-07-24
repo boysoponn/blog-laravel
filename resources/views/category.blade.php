@@ -10,7 +10,7 @@
                 @endif
             </ol>
         </nav>
-        @if (Auth::check())
+        @if (Auth::guard('web')->check())
             @if (isset($category->name) && !empty($category->name) && isset($category->category_id) && !empty($category->category_id))
                 <h2>{{$category->name}} <a href="{{route('addPost',['id' => $category->category_id])}}"><button type="button" class="btn btn-primary">ตั้งกระทู้</button></a></h2>   
             @endif

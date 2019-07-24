@@ -10,14 +10,16 @@
                 @else
                     <li class="breadcrumb-item active" aria-current="page">ไม่ระบุประเภท</li>
                 @endif
-                <li class="breadcrumb-item active" aria-current="page">{{$post->title}}</li>
+                @if (isset($post->title) && !empty($post->title))
+                    <li class="breadcrumb-item active" aria-current="page">{{$post->title}}</li>
+                @endif
             </ol>
         </nav>
         @include('component.post',['post' => $post])
         @if($commentList->isNotEmpty())
             @include('component.comment',['commentList' => $commentList])
         @endif
-        @if (Auth::check())
+        @if (Auth::guard('web')->check())
             <form method="POST" id="comment" action="{{route('commentSuccess',['id' => $post->post_id])}}">
                 @csrf
                 <div class="form-group">

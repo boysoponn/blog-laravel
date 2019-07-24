@@ -9,14 +9,19 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Category;
+use App\Models\Ban;
 
 class PostController extends Controller
 {
     public function user($id)
     {
+        $banList = Ban::with('admin')->withTrashed()->where('user_id',$id)->get();
+        $admin = Auth::guard('admin')->check();
         $user = User::find($id);
         return view('user',[
-            'user' => $user
+            'user' => $user,
+            'admin' => $admin,
+            'banList' => $banList
         ]);
     }
 
@@ -43,7 +48,7 @@ class PostController extends Controller
     }
     public function addPost($id)
     {
-        if(Auth::check()){
+        if(Auth::guard('web')->check()){
             $cateOld = $id;
             $cateList = Category::all();
             return view('addPost',[
@@ -67,7 +72,7 @@ class PostController extends Controller
 
     public function editPost($id)
     {
-        if(Auth::check()){
+        if(Auth::guard('web')->check()){
             $post = Post::with('category')->find($id);
             if(Auth::user()->user_id === $post->user->user_id){
             $cateList = Category::all();
@@ -99,7 +104,7 @@ class PostController extends Controller
 
     public function deletePost($id)
     {
-        if(Auth::check()){
+        if(Auth::guard('web')->check()){
             $post = Post::find($id);
             if(isset($post)){
                 if(Auth::user()->user_id === $post->user->user_id){

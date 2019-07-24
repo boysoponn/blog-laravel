@@ -34,6 +34,7 @@ class AdminLoginForm extends FormRequest
         return [
             'email.required' => 'กรุณากรอกที่อยู่อีเมลของคุณ',
             'password.required' => 'กรุณากรอกรหัสผ่านของคุณ',
+            'password.min' => 'รหัสผ่านต้องมีอย่างน้อย 8 ตัว',
         ];
     }
 }

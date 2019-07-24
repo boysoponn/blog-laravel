@@ -24,7 +24,7 @@ class BanForm extends FormRequest
     public function rules()
     {
         return [
-            'day' => 'required',
+            'time' => 'required|numeric|min:1',
             'description' => 'required',
         ];
     }
@@ -32,7 +32,9 @@ class BanForm extends FormRequest
     public function messages()
     {
         return [
-            'day.required'  => 'ระบุจำนวนวันระงับการใช้งาน',
+            'time.numeric' => 'กรอกตัวเลขเท่านั้น',
+            'time.min' => 'จำนวนวันไม่น้อยกว่า 1 วัน',
+            'time.required'  => 'ระบุจำนวนวันระงับการใช้งาน',
             'description.required'  => 'กรุณากรอกคำอธิบาย',
         ];
     }

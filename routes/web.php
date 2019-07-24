@@ -15,11 +15,12 @@ Route::name('home')->get('/', 'HomeController@index');
 
 Route::name('login')->post('/login', 'Auth\LoginController@login');
 
-Route::name('admin')->get('/admin', 'AdminController@index');
+Route::name('adminUser')->get('/admin/user', 'AdminController@adminUser');
 Route::name('adminLogin')->get('/admin/login', 'Auth\AdminLoginController@showLoginForm');
 Route::name('adminLoginSuccess')->post('/admin/login', 'Auth\AdminLoginController@login');    
 Route::name('adminBan')->get('/admin/ban/{id}', 'AdminController@adminBan');
 Route::name('adminBanSuccess')->post('/admin/ban/success/{id}', 'AdminController@adminBanSuccess');
+Route::name('adminBanCancel')->get('/admin/ban/cancel/{id}', 'AdminController@adminBanCancel');
 
 Route::name('deletePostByadmin')->get('/deletePostByadmin/{id}', 'PostController@deletePostByadmin');
 Route::name('deleteCommentByadmin')->get('/deleteCommentByadmin/{id}', 'PostController@deleteCommentByadmin');
