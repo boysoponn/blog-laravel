@@ -16,8 +16,24 @@
             </ol>
         </nav>
         @include('component.post',['post' => $post])
+        <hr>
         @if($commentList->isNotEmpty())
-            @include('component.comment',['commentList' => $commentList])
+            <table id="commentList">
+                <thead>
+                    <tr>
+                        <th>ความคิดเห็น</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach ($commentList as $comment)    
+                    <tr>  
+                        <td>
+                            @include('component.comment',['comment' => $comment])
+                        </td> 
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         @endif
         @if (Auth::guard('web')->check())
             <form method="POST" id="comment" action="{{route('commentSuccess',['id' => $post->post_id])}}">
@@ -38,6 +54,11 @@
 @endif
 
 @section('script')
+<script>
+    $(document).ready( function () {
+        $('#commentList').DataTable();
+    } );
+</script>
 
 <!-- Laravel Javascript Validation -->
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>

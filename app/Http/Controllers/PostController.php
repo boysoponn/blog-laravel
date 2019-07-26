@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Category;
 use App\Models\Ban;
+use App\Models\Upload;
 
 class PostController extends Controller
 {
@@ -28,7 +29,7 @@ class PostController extends Controller
     public function postByCate($id)
     {
         $category = Category::find($id);
-        $postList = Post::with(['user','comment'])->where('category_id',$id)->latest()->paginate(10);
+        $postList = Post::with(['user','comment'])->where('category_id',$id)->latest()->get();
         return view('category',[
             'category' => $category,
             'postList' => $postList
@@ -39,7 +40,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $commentList = Comment::with('user','user.post','user.comment')->where('post_id',$id)
-        ->paginate(5);
+        ->get();
         return view('post',[
             'post' => $post,
             'commentList' => $commentList,
@@ -51,7 +52,9 @@ class PostController extends Controller
         if(Auth::guard('web')->check()){
             $cateOld = $id;
             $cateList = Category::all();
+            $imageList = Upload::where('user_id',Auth::user()->user_id)->get();
             return view('addPost',[
+                'imageList' => $imageList,
                 'cateList' => $cateList,
                 'cateOld' => $cateOld
             ]);
@@ -61,12 +64,13 @@ class PostController extends Controller
     }
     public function addPostSuccess(PostForm $request)
     {
-        Post::create([
+        $post=Post::create([
             'title' => $request->title,
             'content' => $request->content,
             'category_id' => $request->category,
             'user_id' => Auth::user()->user_id
         ]);
+        $post->upload()->sync($request->file);
         return redirect(route('home'));
     }
 
@@ -74,14 +78,19 @@ class PostController extends Controller
     {
         if(Auth::guard('web')->check()){
             $post = Post::with('category')->find($id);
-            if(Auth::user()->user_id === $post->user->user_id){
+            $user_id = Auth::user()->user_id;
+            if($user_id === $post->user->user_id){
             $cateList = Category::all();
+            $imageList = Upload::where('user_id',$user_id)->get();
+            $imageUpload = $post->upload->pluck('post_id', 'upload_id');
                 if(isset($post)){
                     $cateOld = $post->category->name;
                     return view('edit',[
                         'post' => $post,
                         'cateList' => $cateList,
-                        'cateOld' => $cateOld
+                        'cateOld' => $cateOld,
+                        'imageList' => $imageList,
+                        'imageUpload' => $imageUpload
                     ]);
                 }
             }
@@ -99,6 +108,7 @@ class PostController extends Controller
             'content' => $request->content,
             'category' => $request->category
         ]);
+        $post->upload()->sync($request->file);
         return redirect(route('post',['id' => $id]));
     }
 

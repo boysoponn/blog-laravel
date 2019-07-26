@@ -49,7 +49,10 @@ Route::name('userComment')->get('/user/comment', 'UserController@userComment');
 Route::name('userEditEmail')->get('/user/edit/email', 'UserController@userEditEmail');
 Route::name('userEditEmailSuccess')->post('/user/edit/email/success', 'UserController@UserEditEmailSuccess');
 Route::name('userEditPassword')->get('/user/edit/password', 'UserController@userEditPassword');
-Route::name('userEditPasswordSuccess')->post('/user/edit//password/success', 'UserController@userEditPasswordSuccess');
+Route::name('userEditPasswordSuccess')->post('/user/edit/password/success', 'UserController@userEditPasswordSuccess');
+
+Route::name('upload')->get('/upload', 'UploadController@upload');
+Route::name('uploadSuccess')->post('/upload/success', 'UploadController@uploadSuccess');
 
 
 

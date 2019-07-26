@@ -24,6 +24,15 @@
             @if (isset($post->content) && !empty($post->content))
                 <p class="card-text">{{$post->content}}</p>
             @endif
+            @if($post->upload->isNotEmpty())
+                <div>
+                    @foreach ($post->upload as $image)
+                        @if (isset($image) && !empty($image))
+                            <img src="{{asset('uploads/'.Auth::user()->user_id.'/'.$image->name)}}" alt="{{$image->upload_id}}">
+                        @endif
+                    @endforeach
+                </div>  
+            @endif
             @if (isset($post->user->user_id) && !empty($post->user->user_id) && isset($post->user->name) && !empty($post->user->name))
                 <small>โดย <a href="{{Route('userData',['id' => $post->user->user_id])}}">{{$post->user->name}}</a></small>
             @endif

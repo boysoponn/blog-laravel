@@ -15,15 +15,33 @@
                 <h2>{{$category->name}} <a href="{{route('addPost',['id' => $category->category_id])}}"><button type="button" class="btn btn-primary">ตั้งกระทู้</button></a></h2>   
             @endif
         @endif
-        <div class="container">
-            @if($postList->isNotEmpty())
-                @include('component.postListCate',['postList' => $postList])
-            @else
-                <p>ยังไม่มีกระทู้ใดๆ</p>
-            @endif
-        </div>
+        <hr>
         @if($postList->isNotEmpty())
-            {{$postList->links()}}
+        <table id="postListCate">
+            <thead>
+                <tr>
+                    <th>{{$category->name}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($postList as $post)
+                <tr>  
+                    <td>
+                        @include('component.postListCate',['post' => $post])
+                    </td> 
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @else
+            <p>ยังไม่มีกระทู้ใดๆ</p>
         @endif
     @endsection
-@endif
+@endif    
+@section('script')
+    <script>
+        $(document).ready( function () {
+            $('#postListCate').DataTable();
+        } );
+    </script>
+@endsection

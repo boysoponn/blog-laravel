@@ -29,4 +29,8 @@ class Post extends Model
     {
         return $this->belongsTo('App\Models\Category','category_id');
     }
+    public function upload()
+    {
+        return $this->belongsToMany('App\Models\Upload', 'posts_upload', 'post_id', 'upload_id'); 
+    }
 }

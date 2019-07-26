@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div id="uploader"></div>
     <h2>กระทู้</h2>
     @if($cateList->isNotEmpty())
         @if (Auth::guard('web')->check())
