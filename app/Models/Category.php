@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -28,5 +29,15 @@ class Category extends Model
     public function lastPost()
     {
         return $this->hasOne('App\Models\Post','category_id')->orderBy('post_id', 'desc');
+    }
+    
+    public function getLimit($value,$num)
+    {
+        return Str::limit($value,$num);
+    }
+
+    public function diffentTime($value)
+    {
+        return  $value->locale('th')->diffForHumans();
     }
 }

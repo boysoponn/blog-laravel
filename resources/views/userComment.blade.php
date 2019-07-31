@@ -24,19 +24,19 @@
                                                 @endif
                                                     >
                                                 @if (isset($comment->post->post_id) && !empty($comment->post->post_id) && isset($comment->post->title) && !empty($comment->post->title))
-                                                    <a href="{{route('post',['id'=>$comment->post->post_id])}}">{{Str::limit($comment->post->title,20)}}</a>
+                                                    <a href="{{route('post',['id'=>$comment->post->post_id])}}">{{$comment->getLimit($comment->post->title,20)}}</a>
                                                 @else
                                                     <a>ไม่ทราบกระทู้</a>
                                                 @endif
                                             </div>
                                             <div class="col-4">
                                                 @if (isset($comment->content) && !empty($comment->content))
-                                                    {{Str::limit($comment->content, 30)}}
+                                                    {{$comment->getLimit($comment->content, 30)}}
                                                 @endif
                                             </div>
                                             <div class="col-4">
                                                 @if (isset($comment->created_at) && !empty($comment->created_at))
-                                                    {{$comment->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL')}}
+                                                    {{$comment->getTimezone($comment->created_at)}}
                                                 @endif
                                             </div>
                                         </div>

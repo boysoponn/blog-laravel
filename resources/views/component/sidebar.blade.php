@@ -13,7 +13,7 @@
         <p>อยู่รหว่างระงับการใช้งาน</p> 
         <p>หมดระยะเวลา</p> 
         @if (isset($user->ban->cancel_at) && !empty($user->ban->cancel_at))
-            <p style="font-size:25px;">{{$user->ban->cancel_at->locale('th')->diffForHumans()}}</p>
+            <p style="font-size:25px;">{{$user->ban->diffentTime($user->ban->cancel_at)}}</p>
         @endif
         @if (isset($user->ban->ban_id) && !empty($user->ban->ban_id))
             <a href="{{route('adminBanCancel',['id' => $user->ban->ban_id])}}"><button type="button"  class="btn btn-success">ปลดการระงับใช้งาน</button></a> 

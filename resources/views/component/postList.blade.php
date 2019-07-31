@@ -6,7 +6,7 @@
                     <div class="row">
                         @if (isset($post->title) && !empty($post->title) && isset($post->created_at) && !empty($post->created_at) && isset($post->post_id) && !empty($post->post_id))
                             <div class="col-5">
-                                <a href="{{route('post',['id' => $post->post_id])}}">{{Str::limit($post->title, 100)}}</a>
+                                <a href="{{route('post',['id' => $post->post_id])}}">{{$post->getLimit($post->title,50)}}</a>
                                 @if ($post->created_at->diffInDays() < 7)
                                     <small>ใหม่</small>
                                 @endif   
@@ -28,7 +28,7 @@
                         @endif
                             <div class="col-2">
                                 @if (isset($post->created_at) && !empty($post->created_at))
-                                    <small>วันที่ {{$post->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL')}}</small> 
+                                    <small>วันที่ {{$post->getTimezone($post->created_at)}}</small> 
                                 @endif
                                 @if ( isset($post->comment) && !empty($post->comment))
                                     <small>ความคิดเห็น {{$post->comment->count()}}</small>

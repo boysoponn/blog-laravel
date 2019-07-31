@@ -17,12 +17,12 @@
                                 </div>
                                 <div class="col-4">
                                     @if (isset($ban->description) && !empty($ban->description))
-                                        <p>สาเหตุ {{Str::limit($ban->description,100)}}</p> 
+                                        <p>สาเหตุ {{$ban->getLimit($ban->description,100)}}</p> 
                                     @endif
                                 </div>
                                 <div class="col-2">
                                     @if (isset($ban->cancel_at) && !empty($ban->cancel_at))
-                                        <p>ระยะเวลา {{$ban->cancel_at->locale('th')->diffForHumans()}}</p> 
+                                        <p>ระยะเวลา {{$ban->diffentTime($ban->cancel_at)}}</p> 
                                     @endif
                                 </div>
                                 <div class="col-2">
@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="col-2">
                                     @if (isset($ban->ban_id) && !empty($ban->ban_id))
-                                        <a href="{{route('adminBanCancel',['id' => $ban->ban_id])}}"><button type="button"  class="btn btn-success">ปลดการระงับใช้งาน</button></a> 
+                                        <a href="{{route('adminBanCancel',['id' => $ban->ban_id])}}"><button type="button" style="width:100%" class="btn btn-success">ปลด</button></a> 
                                     @endif
                                 </div>
                             </div>           
@@ -58,12 +58,12 @@
                                 </div>
                                 <div class="col-4">
                                     @if (isset($ban->description) && !empty($ban->description))
-                                        <p>สาเหตุ {{Str::limit($ban->description,100)}}</p> 
+                                        <p>สาเหตุ {{$ban->getLimit($ban->description,100)}}</p> 
                                     @endif
                                 </div>
                                 <div class="col-2">
                                     @if (isset($ban->cancel_at) && !empty($ban->cancel_at))
-                                        <p>ระยะเวลา {{$ban->cancel_at->locale('th')->diffForHumans()}}</p> 
+                                        <p>ระยะเวลา {{$ban->cancel_at->diffentTime($ban->cancel_at)}}</p> 
                                     @endif
                                 </div>
                                 <div class="col-2">
@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="col-2">
                                     @if (isset($ban->ban_id) && !empty($ban->ban_id))
-                                        <a href="{{route('adminBanCancel',['id' => $ban->ban_id])}}"><button type="button"  class="btn btn-success">ปลดการระงับใช้งาน</button></a> 
+                                        <a href="{{route('adminBanCancel',['id' => $ban->ban_id])}}"><button type="button"  style="width:100%"  class="btn btn-success">ปลด</button></a> 
                                     @endif
                                 </div>
                             </div>           

@@ -45,7 +45,7 @@
                             </div>
                             <div class="col-6">
                                 @if (isset($user->created_at) && !empty($user->created_at))
-                                    {{$user->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL')}}
+                                    {{$user->getTimezone($user->created_at)}}
                                 @else
                                     ไม่ทราบวันที่สมัคร
                                 @endif
@@ -57,7 +57,7 @@
                             </div>
                             <div class="col-6">
                                 @if (isset($user->last_sign_in_at) && !empty($user->last_sign_in_at))
-                                    {{$user->last_sign_in_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL')}}
+                                    {{$user->getTimezone($user->last_sign_in_at)}}
                                 @else
                                     ไม่ทราบเวลาเข้าสู่ระบบล่าสุด
                                 @endif
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="col-4">
                                     @if (isset($ban->description) && !empty($ban->description))
-                                        <p>สาเหตุ {{Str::limit($ban->description,100)}}</p>
+                                        <p>สาเหตุ {{$ban->getLimit($ban->description,100)}}</p>
                                     @else
                                         ไม่ทราบสาเหตุ
                                     @endif

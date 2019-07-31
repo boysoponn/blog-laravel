@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Str;
 class Post extends Model
 {
     use SoftDeletes;
@@ -29,8 +29,19 @@ class Post extends Model
     {
         return $this->belongsTo('App\Models\Category','category_id');
     }
+
     public function upload()
     {
         return $this->belongsToMany('App\Models\Upload', 'posts_upload', 'post_id', 'upload_id'); 
+    }
+
+    public function getLimit($value,$num)
+    {
+        return Str::limit($value,$num);
+    }
+
+    public function getTimezone($value)
+    {
+        return $value->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
     }
 }

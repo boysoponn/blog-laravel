@@ -16,32 +16,39 @@
             @endif
         @endif
         <hr>
-        @if($postList->isNotEmpty())
-        <table id="postListCate">
+
+        <table id="datatable" class="table table-hover table-bordered table-striped datatable" style="width:100%">
             <thead>
                 <tr>
-                    <th>{{$category->name}}</th>
+                    <th>ชื่อกระทูู้</th>
+                    <th>โดย</th>
+                    <th>ตอบ</th>
+                    <th>วันที่</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($postList as $post)
-                <tr>  
-                    <td>
-                        @include('component.postListCate',['post' => $post])
-                    </td> 
-                </tr>
-                @endforeach
-            </tbody>
         </table>
-        @else
-            <p>ยังไม่มีกระทู้ใดๆ</p>
-        @endif
+
     @endsection
 @endif    
 @section('script')
-    <script>
-        $(document).ready( function () {
-            $('#postListCate').DataTable();
-        } );
-    </script>
+<script>
+    $(function() {
+        $('#datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('getCategory') }}",
+                data: {
+                    id: {{ $category->category_id }}
+                }
+            },
+            columns: [
+                    { data: 'title', name: 'title' },
+                    { data: 'user_name', name: 'user_name' },
+                    { data: 'comments_num', name: 'comments_num' },
+                    { data: 'updated_at', name: 'updated_at' }
+            ],
+        });
+    });
+</script>
 @endsection

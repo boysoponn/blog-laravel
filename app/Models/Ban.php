@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Ban extends Model
 {
@@ -27,5 +28,18 @@ class Ban extends Model
     public function admin()
     {
         return $this->belongsTo('App\Models\Admin','admin_id');
+    }
+    public function getLimit($value,$num)
+    {
+        return Str::limit($value,$num);
+    }
+    public function diffentTime($value)
+    {
+        return  $value->locale('th')->diffForHumans();
+    }
+
+    public function getTimezone($value)
+    {
+        return $value->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
     }
 }

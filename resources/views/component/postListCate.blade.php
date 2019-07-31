@@ -22,7 +22,7 @@
                 @endif
                 @if (isset($post->created_at) && !empty($post->created_at))
                     <div class="col-2">
-                        วันที่ {{$post->created_at->locale('th')->isoFormat('LLL')}} 
+                        วันที่ {{$post->getTimezone($post->created_at)}} 
                     </div>
                 @endif
             </div>           

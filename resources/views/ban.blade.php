@@ -8,7 +8,7 @@
             <h5 class="card-title">รายละเอียด</h5>
             @if (isset($ban->cancel_at) && !empty($ban->cancel_at))
                 <p class="card-text">ระยะเวลา {{$ban->cancel_at->diffInHours()}} ชั่วโมง </p>
-                <p class="card-text">ปลดแบนวันที่ {{$ban->cancel_at->locale('th')->isoFormat('LLL')}}</p>
+                <p class="card-text">ปลดแบนวันที่ {{$ban->getTimezone($ban->cancel_at)}}</p>
             @endif
             @if (isset($ban->description) && !empty($ban->description))
                 <p class="card-text">สาเหตุ {{$ban->description}}</p>

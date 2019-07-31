@@ -18,11 +18,11 @@
                             <div class="row">
                                 <div class="col-5">
                                     @if (isset($post->post_id) && !empty($post->post_id) && isset($post->title) && !empty($post->title))
-                                        <a href="{{route('post',['id'=>$post->post_id])}}">{{Str::limit($post->title, 50)}}</a>
+                                        <a href="{{route('post',['id'=>$post->post_id])}}">{{$post->getLimit($post->title,50)}}</a>
                                     @endif
                                 </div>
                                 <div class="col-4">
-                                    {{$post->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL')}}
+                                    {{$post->getTimezone($post->created_at)}}
                                 </div>
                                 <div class="col-3">
                                     @if (isset($post->post_id) && !empty($post->post_id))

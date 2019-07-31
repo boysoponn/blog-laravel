@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UploadForm;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Upload;
+use Illuminate\Support\Facades\Hash;
 
 class UploadController extends Controller
 {
@@ -19,13 +20,14 @@ class UploadController extends Controller
     }
 
     public function uploadSuccess(UploadForm $request){
-        if ($request->hasFile('file')) {
-            Upload::create([
-                'name' => $request->file->getClientOriginalName(),
-                'user_id' => Auth::user()->user_id
-            ]);
-            $request->file->storeAs(Auth::user()->user_id, $request->file->getClientOriginalName());
+        $fileGroup = $request->file;
+        foreach ($fileGroup as $key => $value) {
+                Upload::create([
+                    'name' => $value->hashName(),
+                    'user_id' => Auth::user()->user_id
+                ]);
+                $value->storeAs(Auth::user()->user_id,$value->hashName());
         }
-        return redirect(route('upload'));
+        return redirect()->back()->withInput($request->only('title', 'content'));
     }
 }

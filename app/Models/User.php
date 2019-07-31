@@ -16,7 +16,7 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
     protected $hidden = [
-        'password', 'remember_token',
+        'password','remember_token',
     ];
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -35,4 +35,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Models\Ban','user_id');
     }
+    public function getTimezone($value)
+    {
+        return $value->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
+    }
+
 }

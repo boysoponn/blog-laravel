@@ -5,8 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
+                <div class="card-header">
+                    <p style="float:left">ผู้ใช้งานทั่วไป</p> 
+                    <a style="float:right" href="{{route('adminLogin')}}"><button type="button"class="btn btn-primary">แอดมิน</button></a>
+                </div>
                 <div class="card-body">
                     <form method="POST" id="login" action="{{ route('login') }}">
                         @csrf

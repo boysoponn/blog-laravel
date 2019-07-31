@@ -26,8 +26,10 @@ Route::name('deletePostByadmin')->get('/deletePostByadmin/{id}', 'PostController
 Route::name('deleteCommentByadmin')->get('/deleteCommentByadmin/{id}', 'PostController@deleteCommentByadmin');
 
 Route::name('category')->get('/category/{id}', 'PostController@postByCate');
+Route::name('getCategory')->get('getcategory', 'PostController@getCategory');
 
 Route::name('post')->get('/post/{id}', 'PostController@index');
+Route::name('getComment')->get('getComment', 'PostController@getComment');
 Route::name('addPost')->get('/addpost/{id}', 'PostController@addPost');
 Route::name('addPostSuccess')->post('/addpost/success/', 'PostController@addPostSuccess');
 Route::name('editPost')->get('/editpost/{id}', 'PostController@editPost');
@@ -51,7 +53,6 @@ Route::name('userEditEmailSuccess')->post('/user/edit/email/success', 'UserContr
 Route::name('userEditPassword')->get('/user/edit/password', 'UserController@userEditPassword');
 Route::name('userEditPasswordSuccess')->post('/user/edit/password/success', 'UserController@userEditPasswordSuccess');
 
-Route::name('upload')->get('/upload', 'UploadController@upload');
 Route::name('uploadSuccess')->post('/upload/success', 'UploadController@uploadSuccess');
 
 

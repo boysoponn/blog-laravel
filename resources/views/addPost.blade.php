@@ -31,39 +31,14 @@
                     <textarea class="form-control" id="content" rows="15" name="content"></textarea>
                 </div>
                 <hr>
-                <a href="{{route('upload')}}">อัพโหลด</a>
-                <hr>
-                @if($imageList->isNotEmpty())
-                    <table id="imageList">
-                        <thead>
-                            <tr>
-                                <th>choose</th>
-                                <th>image</th>
-                                <th>name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($imageList as $image)
-                            <tr>  
-                                <td>
-                                    <input type="checkbox" id={{$image->upload_id}} name='file[]' aria-label="Checkbox for following text input" value="{{$image->upload_id}}"> 
-                                </td> 
-                                <td>
-                                    <img width='50px' id={{$image->upload_id}} src="{{asset('uploads/'.Auth::user()->user_id.'/'.$image->name)}}" alt="">
-                                </td> 
-                                <td>
-                                    <p>{{$image->name}}</p>
-                                </td> 
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @endif
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">แนบรูปภาพ</button>
+                @include('component.imageList',['imageList' => $imageList])
                 <hr>
                 <div class="form-group">
                     <button class="btn btn-secondary" type="submit">ยืนยัน</button>
                 </div>
             </form>
+            @include('component.upload')
     @endsection 
 
     @section('script')
@@ -72,8 +47,8 @@
             $('#imageList').DataTable();
         } );
     </script>
-    <!-- Laravel Javascript Validation -->
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 
     {!! JsValidator::formRequest('App\Http\Requests\PostForm','#addpost')!!}
+    {!! JsValidator::formRequest('App\Http\Requests\UploadForm','#upload')!!}
     @endsection 

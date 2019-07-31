@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Comment extends Model
 {
@@ -23,5 +24,14 @@ class Comment extends Model
     public function post()
     {
         return $this->belongsTo('App\Models\Post','post_id');
+    }
+    public function getLimit($value,$num)
+    {
+        return Str::limit($value,$num);
+    }
+
+    public function getTimezone($value)
+    {
+        return $value->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
     }
 }

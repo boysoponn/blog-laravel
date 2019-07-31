@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
