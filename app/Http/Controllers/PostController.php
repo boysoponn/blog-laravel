@@ -29,8 +29,9 @@ class PostController extends Controller
     }
 
     public function getCategory(Request $request){
-        $post = Post::where('category_id',$request->id);
-        return Datatables::of($post->with('comment', 'user'))
+        $post = Post::where('category_id',$request->id)->with('comment', 'user');
+        return DataTables::eloquent($post)
+        ->only(['title','user_name','comments_num','updated_at'])
         ->addColumn('user_name', function($row){
             return $row->user->name;
         })
@@ -38,13 +39,13 @@ class PostController extends Controller
             return '<a href="' . route('userData', ['id' => $row->user_id]) . '">'.$row->user->name.'</a>';
         })
         ->editColumn('title', function ($row) {
-            return '<a href="' . route('post', ['id' => $row->post_id]) . '">'.$row->title.'</a>';
+            return '<a href="' . route('post', ['id' => $row->post_id]) . '">'.(str_limit($row->title,20)).'</a>';
         })
         ->addColumn('comments_num', function($row){
             return $row->comment->count();
         })
         ->editColumn('updated_at', function ($row) {
-            return $row->getTimeZone($row->created_at);
+            return $row->time_create;
         })
         ->filterColumn('user_name', function ($query, $keyword) {
             $query->whereHas('user', function ($query1) use ($keyword) {
@@ -74,8 +75,9 @@ class PostController extends Controller
     }
 
     public function getComment(Request $request){
-        $comment = Comment::where('post_id',$request->id);
-        return Datatables::of($comment->with('post', 'user'))  
+        $comment = Comment::where('post_id',$request->id)->with('post', 'user'); 
+        return DataTables::eloquent($comment)
+        ->only(['content','user'])
         ->addColumn('user', function($row){
             return '<a href="' . route('userData', ['id' => $row->user_id]) . '">'.$row->user->name.'</a>
             <small>จำนวนกระทู้ : '.($row->user->comment->count()+$row->user->post->count()).'กระทู้</small>';

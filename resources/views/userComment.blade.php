@@ -36,7 +36,7 @@
                                             </div>
                                             <div class="col-4">
                                                 @if (isset($comment->created_at) && !empty($comment->created_at))
-                                                    {{$comment->getTimezone($comment->created_at)}}
+                                                    {{$comment->time_create}}
                                                 @endif
                                             </div>
                                         </div>

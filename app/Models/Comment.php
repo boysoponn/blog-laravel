@@ -30,8 +30,8 @@ class Comment extends Model
         return Str::limit($value,$num);
     }
 
-    public function getTimezone($value)
+    public function getTimeCreateAttribute()
     {
-        return $value->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
+        return $this->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
     }
 }

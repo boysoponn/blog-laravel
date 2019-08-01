@@ -28,7 +28,7 @@
                         @endif
                             <div class="col-2">
                                 @if (isset($post->created_at) && !empty($post->created_at))
-                                    <small>วันที่ {{$post->getTimezone($post->created_at)}}</small> 
+                                    <small>วันที่ {{$post->time_create}}</small> 
                                 @endif
                                 @if ( isset($post->comment) && !empty($post->comment))
                                     <small>ความคิดเห็น {{$post->comment->count()}}</small>

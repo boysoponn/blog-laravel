@@ -45,7 +45,7 @@
                             </div>
                             <div class="col-6">
                                 @if (isset($user->created_at) && !empty($user->created_at))
-                                    {{$user->getTimezone($user->created_at)}}
+                                    {{$user->time_create}}
                                 @else
                                     ไม่ทราบวันที่สมัคร
                                 @endif
@@ -57,7 +57,7 @@
                             </div>
                             <div class="col-6">
                                 @if (isset($user->last_sign_in_at) && !empty($user->last_sign_in_at))
-                                    {{$user->getTimezone($user->last_sign_in_at)}}
+                                    {{$user->time_last_sign}}
                                 @else
                                     ไม่ทราบเวลาเข้าสู่ระบบล่าสุด
                                 @endif

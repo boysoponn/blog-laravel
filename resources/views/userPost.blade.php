@@ -22,7 +22,7 @@
                                     @endif
                                 </div>
                                 <div class="col-4">
-                                    {{$post->getTimezone($post->created_at)}}
+                                    {{$post->time_create}}
                                 </div>
                                 <div class="col-3">
                                     @if (isset($post->post_id) && !empty($post->post_id))

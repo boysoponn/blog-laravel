@@ -29,17 +29,24 @@ class Ban extends Model
     {
         return $this->belongsTo('App\Models\Admin','admin_id');
     }
+
     public function getLimit($value,$num)
     {
         return Str::limit($value,$num);
     }
+
     public function diffentTime($value)
     {
         return  $value->locale('th')->diffForHumans();
     }
 
-    public function getTimezone($value)
+    public function getTimeCreateAttribute()
     {
-        return $value->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
+        return $this->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
+    }
+
+    public function getTimeCancel_atAttribute()
+    {
+        return $this->cancel_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
     }
 }
