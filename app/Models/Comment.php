@@ -25,6 +25,12 @@ class Comment extends Model
     {
         return $this->belongsTo('App\Models\Post','post_id');
     }
+
+    public function upload()
+    {
+        return $this->belongsToMany('App\Models\Upload', 'comment_upload', 'comment_id', 'upload_id'); 
+    }
+
     public function getLimit($value,$num)
     {
         return Str::limit($value,$num);
@@ -33,5 +39,10 @@ class Comment extends Model
     public function getTimeCreateAttribute()
     {
         return $this->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
+    }
+
+    public function like()
+    {
+        return $this->morphMany('App\Models\Like', 'likeable');
     }
 }

@@ -12,8 +12,8 @@
                 @csrf
                 <div class="input-group mb-3">
                     <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="file[]" id="file-upload" multiple="multiple">
-                    <label class="custom-file-label" for="ile-upload">เลือกภาพของคุณ</label>
+                        <input name="file[]" id="upload" type="file" multiple="multiple">
+                        <div id="upload_prev"></div>    
                     </div>
                 </div>
                 <div class="form-group">

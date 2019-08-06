@@ -34,8 +34,25 @@
                 </div>        
             @endif
             @if (isset($post->user->user_id) && !empty($post->user->user_id) && isset($post->user->name) && !empty($post->user->name))
-                <small>โดย <a href="{{Route('userData',['id' => $post->user->user_id])}}">{{$post->user->name}}</a></small>
+                <small>โดย <a href="{{route('userData',['id' => $post->user->user_id])}}">{{$post->user->name}}</a></small>
             @endif
+            <hr>
+            <div>
+                @if ($post->like()->count() === 0)
+                <p>เป็นคนแรกที่ถูกใจสิ่งนี้</p>
+                @else
+                    <p style="cursor: pointer" data-toggle="modal" data-target="#exampleModalCenter3">{{$post->like()->count()}}คน ถูกใจสิ่งนี้ </p>  
+                    @include('component.modelLike',['likeList'=> $post->like])
+                @endif 
+
+                @if (Auth::guard('web')->check())
+                    @if (isset($likePost) && !empty($likePost))
+                        <a href="{{route('unlikePostSuccess',['id' => $post->post_id])}}"><button type="button"  class="btn btn-primary">ถูกใจแล้ว</button></a>
+                    @else
+                        <a href="{{route('likePostSuccess',['id' => $post->post_id])}}"><button type="button"  class="btn btn-danger">ถูกใจ</button></a>
+                    @endif
+                @endif
+            </div>
         </div>
     </div>
 @endif

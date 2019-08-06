@@ -28,6 +28,6 @@ class UploadController extends Controller
                 ]);
                 $value->storeAs(Auth::user()->user_id,$value->hashName());
         }
-        return redirect()->back()->withInput($request->only('title', 'content'));
+        return redirect()->back();
     }
 }

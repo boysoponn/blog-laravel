@@ -25,20 +25,19 @@
                 <label for="comment">ความคิดเห็น</label>
                 <textarea class="form-control" name="content" id="comment" rows="3"></textarea>
             </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">แนบรูปภาพ</button>
+            @include('component.imageList',['imageList' => $imageList])
             <div class="form-group">
                 <button class="btn btn-secondary" type="submit">ยืนยัน</button>
             </div>
         </form>
+        @include('component.upload')
     @endif
     <hr>
-    <table id="commentList" class="table table-hover table-bordered table-striped datatable" style="width:100%">
-        <thead>
-            <tr>
-                <th>ความคิดเห็น</th>
-                <th>โดย</th>
-            </tr>
-        </thead>
-    </table>
+    @foreach ($commentList as $comment)
+        @include('component.comment',['comment' => $comment])
+    @endforeach
+    {{ $commentList->links() }}
 @endsection
 @else
     @section('content')
@@ -48,25 +47,6 @@
 @endif
 
 @section('script')
-<script>
-    $(function() {
-        $('#commentList').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ route('getComment') }}",
-                data: {
-                    id: {{ $post->post_id }}
-                }
-            },
-            columns: [
-                    { data: 'content', name: 'content' },
-                    { data: 'user', name: 'user' },
-            ],
-        });
-    });
-</script>
-
 <!-- Laravel Javascript Validation -->
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 

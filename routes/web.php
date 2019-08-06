@@ -29,7 +29,6 @@ Route::name('category')->get('/category/{id}', 'PostController@postByCate');
 Route::name('getCategory')->get('getcategory', 'PostController@getCategory');
 
 Route::name('post')->get('/post/{id}', 'PostController@index');
-Route::name('getComment')->get('getComment', 'PostController@getComment');
 Route::name('addPost')->get('/addpost/{id}', 'PostController@addPost');
 Route::name('addPostSuccess')->post('/addpost/success/', 'PostController@addPostSuccess');
 Route::name('editPost')->get('/editpost/{id}', 'PostController@editPost');
@@ -55,5 +54,9 @@ Route::name('userEditPasswordSuccess')->post('/user/edit/password/success', 'Use
 
 Route::name('uploadSuccess')->post('/upload/success', 'UploadController@uploadSuccess');
 
+Route::name('likePostSuccess')->get('/like/post/success/{id}', 'LikeController@likePostSuccess');
+Route::name('unlikePostSuccess')->get('/unlike/post/success/{id}', 'LikeController@unlikePostSuccess');
+Route::name('likeCommentSuccess')->get('/like/comment/success/{id}', 'LikeController@likeCommentSuccess');
+Route::name('unlikeCommentSuccess')->get('/unlike/comment/success/{id}', 'LikeController@unlikeCommentSuccess');
 
 

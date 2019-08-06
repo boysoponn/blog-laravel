@@ -16,7 +16,7 @@ class HomeController extends Controller
         $cateList = Category::with(['lastpost', 'lastpost.user','comments','post'])->get();
         return view('home',[
             'postList' => $postList,
-            'cateList' => $cateList
+            'cateList' => $cateList,
         ]);
     }
 }

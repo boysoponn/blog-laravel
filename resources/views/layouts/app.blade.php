@@ -111,6 +111,14 @@
             </div>
         </main>
     </div>
+    <script>
+        $("#upload").change(function() { 
+            var files = $('#upload')[0].files;
+            for (var i = 0; i < files.length; i++) {
+                $("#upload_prev").append(files[i].name);
+            }
+        });
+    </script>
     @yield('script')
 </body>
 </html>

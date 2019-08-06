@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Category;
 use App\Models\Ban;
+use App\Models\Like;
 use App\Models\Upload;
 use DataTables;
 
@@ -31,7 +32,7 @@ class PostController extends Controller
     public function getCategory(Request $request){
         $post = Post::where('category_id',$request->id)->with('comment', 'user');
         return DataTables::eloquent($post)
-        ->only(['title','user_name','comments_num','updated_at'])
+        ->only(['title','user_name','comments_num','time_create'])
         ->addColumn('user_name', function($row){
             return $row->user->name;
         })
@@ -44,7 +45,7 @@ class PostController extends Controller
         ->addColumn('comments_num', function($row){
             return $row->comment->count();
         })
-        ->editColumn('updated_at', function ($row) {
+        ->addColumn('time_create', function ($row) {
             return $row->time_create;
         })
         ->filterColumn('user_name', function ($query, $keyword) {
@@ -52,43 +53,57 @@ class PostController extends Controller
                 $query1->where('users.name', 'like', '%' . $keyword . '%');
             });
         })
+        // ->filterColumn('time_create', function ($query, $keyword) {
+        //     $query->whereHas('user', function ($query1) use ($keyword) {
+        //         $query1->where('users.name', 'like', '%' . $keyword . '%');
+        //     });
+        // })
+        // ->filterColumn('comments_num', function ($query, $keyword) {
+        //     $query->whereHas('comment', function ($query1) use ($keyword) {
+        //         $query1->where(\DB::raw('count(comments.comment_id)'), 'like', '%' . $keyword . '%');
+        //     });
+        // })
         ->rawColumns(['user_name','title'])
         ->make(true);
     }
 
     public function postByCate($id)
     {
+
         $category = Category::find($id);
         return view('category',['category' => $category]);
     }
 
     public function index($id)
     {
+        $imageList = null;
+        $likePost = null;
+        $likeComment = null;
+        if(Auth::guard('web')->check()){
+            $user_id = Auth::guard('web')->user()->user_id;
+            $likePost = Like::where('user_id', $user_id)
+                ->where('likeable_type', 'post')
+                ->where('likeable_id', $id)
+                ->first();
+            $likeComment = Like::where('user_id', $user_id)
+                ->where('likeable_type', 'comment')
+                ->get();
+            $imageList = Upload::where('user_id', $user_id)
+                ->latest()
+                ->get();
+        }
         $post = Post::find($id);
-        $commentList = Comment::with('user','user.post','user.comment')->where('post_id',$id)
-        ->get();
+        $commentList = Comment::with('user','user.post', 'user.comment')
+        ->where('post_id', $id)
+        ->paginate(5);
         return view('post',[
+            'likePost' => $likePost,
+            'likeComment' => $likeComment,
             'post' => $post,
+            'imageList' => $imageList,
             'commentList' => $commentList,
             'admin' => Auth::guard('admin')->check()
         ]);
-    }
-
-    public function getComment(Request $request){
-        $comment = Comment::where('post_id',$request->id)->with('post', 'user'); 
-        return DataTables::eloquent($comment)
-        ->only(['content','user'])
-        ->addColumn('user', function($row){
-            return '<a href="' . route('userData', ['id' => $row->user_id]) . '">'.$row->user->name.'</a>
-            <small>จำนวนกระทู้ : '.($row->user->comment->count()+$row->user->post->count()).'กระทู้</small>';
-        }) 
-        ->filterColumn('user', function ($query, $keyword) {
-            $query->whereHas('user', function ($query1) use ($keyword) {
-                $query1->where('users.name', 'like', '%' . $keyword . '%');
-            });
-        })
-        ->rawColumns(['user'])
-        ->make(true);
     }
 
     public function addPost($id)
@@ -168,6 +183,7 @@ class PostController extends Controller
                 if(Auth::user()->user_id === $post->user->user_id){
                     Post::find($id)->delete();
                     Comment::where('post_id',$id)->delete();  
+                    $post->upload()->detach();
                 }
             }
         }
@@ -180,6 +196,7 @@ class PostController extends Controller
           if(isset($post)){    
             Post::find($id)->delete();
             Comment::where('post_id',$id)->delete();  
+            $post->upload()->detach();
           }
         }
         return redirect(route('home'));
@@ -190,6 +207,7 @@ class PostController extends Controller
           $comment = Comment::find($id);
           if(isset($comment)){    
             Comment::find($id)->delete();
+            $comment->upload()->detach();
           }
         }
         return redirect()->back();

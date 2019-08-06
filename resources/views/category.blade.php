@@ -17,7 +17,7 @@
         @endif
         <hr>
 
-        <table id="datatable" class="table table-hover table-bordered table-striped datatable" style="width:100%">
+        <table id="datatable1" class="table table-hover table-bordered table-striped datatable" style="width:100%">
             <thead>
                 <tr>
                     <th>ชื่อกระทูู้</th>
@@ -26,6 +26,14 @@
                     <th>วันที่</th>
                 </tr>
             </thead>
+            <tfoot>
+                <tr>
+                    <th>ชื่อกระทูู้</th>
+                    <th>โดย</th>
+                    <th>ตอบ</th>
+                    <th>วันที่</th>
+                </tr>
+            </tfoot>
         </table>
 
     @endsection
@@ -33,7 +41,7 @@
 @section('script')
 <script>
     $(function() {
-        $('#datatable').DataTable({
+        $('#datatable1').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -43,12 +51,33 @@
                 }
             },
             columns: [
-                    { data: 'title', name: 'title' },
-                    { data: 'user_name', name: 'user_name' },
-                    { data: 'comments_num', name: 'comments_num' },
-                    { data: 'updated_at', name: 'updated_at' }
+                    { data: 'title', name: 'title' ,},
+                    { data: 'user_name', name: 'user_name' ,},
+                    { data: 'comments_num', name: 'comments_num' , },
+                    { data: 'time_create', name: 'time_create', }
             ],
         });
     });
+
+    $(document).ready(function() {
+    $('#datatable1 tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+
+    var table = $('#datatable1').DataTable();
+
+    table.columns().every( function () {
+        var that = this;
+
+        $( 'input', this.footer() ).on( 'keyup change clear', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+    } );
 </script>
 @endsection

@@ -44,4 +44,9 @@ class Post extends Model
     {
         return $this->created_at->setTimezone('Asia/Phnom_Penh')->locale('th')->isoFormat('LLL');
     }
+
+    public function like()
+    {
+        return $this->morphMany('App\Models\Like', 'likeable');
+    }
 }
