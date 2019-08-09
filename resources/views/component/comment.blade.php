@@ -1,5 +1,5 @@
-@if (isset($comment->comment_id) && !empty($comment->comment_id))
-    <div class="card" id="{{$comment->comment_id}}">
+@if (isset($comment) && !empty($comment))
+    <div class="card">
         <div class="card-body">
             @if (isset($comment->content) && !empty($comment->content))
                 <p class="card-text">{{$comment->content}}</p>
@@ -8,7 +8,7 @@
                 <small>ตอบกลับโดย <a href="{{Route('userData',['id' => $comment->user->user_id])}}">{{$comment->user->name}}</a></small>
             @endif
             @if (isset($comment->user->post) && !empty($comment->user->comment))
-                <small>จำนวนกระทู้ {{$comment->user->post->count()+$comment->user->comment->count()}}</small>
+                <small>จำนวนกระทู้ {{$comment->user->post_count + $comment->user->comment_count}}</small>
             @endif
             @if ($admin)
                 <div style="margin-bottom:20px">
@@ -22,38 +22,19 @@
                     <small>รูปภาพที่แนบมา</small>
                     <div>
                         @foreach ($comment->upload as $image)
-                            <img style="width:100px;" src="{{asset('uploads/'.$image->user_id.'/'.$image->name)}}" alt="{{$image->upload_id}}">
+                            <img style="height:200px;" src="{{asset('uploads/'.$image->user_id.'/'.$image->name)}}" alt="{{$image->upload_id}}">
                         @endforeach
                     </div>
                 </div>
             @endif
             <br><br>
             <div>
-                @if ($comment->like()->count() === 0)
-                    <small>เป็นคนแรกที่ถูกใจสิ่งนี้</small>
-                @else
-                    <small>{{$comment->like()->count()}}คน ถูกใจสิ่งนี้ </small> 
-                    
-                @endif 
-
                 @if (Auth::guard('web')->check())
-                    @if(isset($likeComment) && !empty($likeComment))
-                        @php
-                            $check = false;
-                            foreach ($likeComment as $item){
-                                if ($item->likeable_id === $comment->comment_id){
-                                    $check = true;
-                                }
-                            }   
-                        @endphp
-                        <div>
-                            @if ($check)
-                                <a href="{{route('unlikeCommentSuccess',['id' => $comment->comment_id])}}"><button type="button"  class="btn btn-primary">ถูกใจแล้ว</button></a>
-                            @else 
-                                <a href="{{route('likeCommentSuccess',['id' => $comment->comment_id])}}"><button type="button"  class="btn btn-danger">ถูกใจ</button></a>
-                            @endif
-                        </div>
-                    @endif
+                    <i data-comment="{{$comment->comment_id}}" style="color:red; font-size:20px; cursor: pointer;" class="likeComment @if($comment->like->isNotEmpty()) fas @else far @endif fa-heart"></i>
+                    <span id={{"textLikeComment".$comment->comment_id}}  class="textComment" data-comment="{{$comment->comment_id}}" style="cursor: pointer; font-size:16px" data-toggle="modal" data-target="#exampleModalCenter3">@if ($comment->like_count > 0) {{$comment->like_count}} @else เป็นคนแรกที่ถูกใจสิ่งนี้ @endif</span>  
+                @else
+                    <i  style="color:red; font-size:20px" class="fas fa-heart"></i>
+                    <span style="font-size:20px">{{$comment->like_count}}</span>  
                 @endif
             </div>
         </div>

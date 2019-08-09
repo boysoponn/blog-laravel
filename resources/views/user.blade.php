@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-6">
                                 @if (isset($user->post) && !empty($user->post) && isset($user->comment) && !empty($user->comment))
-                                    {{$user->post->count()+$user->comment->count()}}
+                                    {{$user->post_count+$user->comment_count}}
                                 @else
                                     ไม่ทราบจำนวนกระทู้
                                 @endif

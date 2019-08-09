@@ -21,7 +21,7 @@ class PostController extends Controller
     {
         $banList = Ban::with('admin')->withTrashed()->where('user_id',$id)->get();
         $admin = Auth::guard('admin')->check();
-        $user = User::find($id);
+        $user = User::with(['post','comment'])->withCount(['post','comment'])->find($id);
         return view('user',[
             'user' => $user,
             'admin' => $admin,
@@ -30,7 +30,9 @@ class PostController extends Controller
     }
 
     public function getCategory(Request $request){
-        $post = Post::where('category_id',$request->id)->with('comment', 'user');
+        $post = Post::where('category_id',$request->id)
+        ->with('comment', 'user')
+        ->withCount('comment');
         return DataTables::eloquent($post)
         ->only(['title','user_name','comments_num','time_create'])
         ->addColumn('user_name', function($row){
@@ -43,7 +45,7 @@ class PostController extends Controller
             return '<a href="' . route('post', ['id' => $row->post_id]) . '">'.(str_limit($row->title,20)).'</a>';
         })
         ->addColumn('comments_num', function($row){
-            return $row->comment->count();
+            return $row->comment_count;
         })
         ->addColumn('time_create', function ($row) {
             return $row->time_create;
@@ -76,9 +78,9 @@ class PostController extends Controller
 
     public function index($id)
     {
-        $imageList = null;
         $likePost = null;
         $likeComment = null;
+        $user_id = null;
         if(Auth::guard('web')->check()){
             $user_id = Auth::guard('web')->user()->user_id;
             $likePost = Like::where('user_id', $user_id)
@@ -87,20 +89,19 @@ class PostController extends Controller
                 ->first();
             $likeComment = Like::where('user_id', $user_id)
                 ->where('likeable_type', 'comment')
-                ->get();
-            $imageList = Upload::where('user_id', $user_id)
-                ->latest()
-                ->get();
+                ->get();        
         }
-        $post = Post::find($id);
-        $commentList = Comment::with('user','user.post', 'user.comment')
+        $post = Post::with('user','like','like.user')->withCount('like')->find($id);
+        $commentList = Comment::with(['like' => function($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        }, 'user.post', 'user.comment','upload','user' => function($query){$query->withCount('post','comment');}])
+        ->withCount('like')
         ->where('post_id', $id)
         ->paginate(5);
         return view('post',[
             'likePost' => $likePost,
             'likeComment' => $likeComment,
             'post' => $post,
-            'imageList' => $imageList,
             'commentList' => $commentList,
             'admin' => Auth::guard('admin')->check()
         ]);
@@ -129,7 +130,7 @@ class PostController extends Controller
             'category_id' => $request->category,
             'user_id' => Auth::user()->user_id
         ]);
-        $post->upload()->sync($request->file);
+        $post->upload()->sync($request->image);
         return redirect(route('home'));
     }
 
@@ -171,7 +172,7 @@ class PostController extends Controller
             'content' => $request->content,
             'category' => $request->category
         ]);
-        $post->upload()->sync($request->file);
+        $post->upload()->sync($request->image);
         return redirect(route('post',['id' => $id]));
     }
 

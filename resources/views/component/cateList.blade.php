@@ -16,9 +16,9 @@
                        
                         <div class="col-3">
                             @if (isset($cate->post) && !empty($cate->post) && isset($cate->comments) && !empty($cate->comments))
-                                <small>จำนวนหัวข้อ {{$cate->post->count()}}</small>
+                                <small>จำนวนหัวข้อ {{$cate->post_count}}</small>
                                 /
-                                <small>จำนวนกระทู้ {{$cate->comments->count() + $cate->post->count()}}</small>
+                                <small>จำนวนกระทู้ {{$cate->comments_count + $cate->post_count}}</small>
                             @endif
                         </div>
                         <div class="col-2">

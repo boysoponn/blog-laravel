@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Auth;
+use Redirect;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use App\Models\Ban;
@@ -46,8 +47,9 @@ class LoginController extends Controller
                     'ban' => $ban,
                 ]);
             }else{
-                Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password]);
-                return redirect()->route('home');
+                if(Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])){
+                    return redirect()->intended();
+                }
             }
         }else{
             return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors(['password'=> 'รหัสผ่านไม่ถูกต้อง']);

@@ -35,8 +35,8 @@
                         <textarea class="form-control" id="content"name="content" rows="15">@if (isset($post->content) && !empty($post->content)) {{$post->content}} @endif</textarea>
                     </div>
                     <hr>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">แนบรูปภาพ</button>
-                    @include('component.imageList',['imageList' => $imageList])
+                    <button type="button" id="imageListBtn" class="btn btn-primary" data-toggle="modal" data-target="#modalImageList">แนบรูปภาพ</button>
+                    @include('component.imageList')
                     <hr>
                     <div class="form-group">
                         <button class="btn btn-secondary" type="submit">ยืนยัน</button>
@@ -54,8 +54,43 @@
 @endif
 
 @section('script')
+<script>
+    $(document).on('click', '#imageListBtn', function(){
+        $($(this).data("target")+' .modal-body').load("{{route('modelImageList')}}");
+    });
+
+    $(document).on('click','.unChooseImage',function(){
+        var id = $(this).data("imageid");
+        $(this).removeClass("unChooseImage").addClass("ChooseImage");
+        $('#inputImgae'+id).attr("checked",true) 
+    });
+
+    $(document).on('click','.ChooseImage',function(){
+        var id = $(this).data("imageid");
+        $(this).removeClass("ChooseImage").addClass("unChooseImage");
+        $('#inputImgae'+id).attr("checked",false) ;  
+    });
+
+    $("#uploadForm").submit(function(event){
+    event.preventDefault();
+    var post_url = $(this).attr("action");
+    var request_method = $(this).attr("method");
+    var form_data = new FormData(this);
+    $.ajax({
+        url : post_url,
+        type: request_method,
+        data : form_data,
+        contentType: false,
+        processData:false,
+        success:function(data){
+            $('#exampleModalCenter2').modal('toggle')
+            $('#modalImageList'+' .modal-body').load("{{route('modelImageList')}}");
+        }
+    })
+});
+</script>
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 
 {!! JsValidator::formRequest('App\Http\Requests\PostForm','#edit')!!}
-{!! JsValidator::formRequest('App\Http\Requests\UploadForm','#upload')!!}
+{!! JsValidator::formRequest('App\Http\Requests\UploadForm','#uploadForm')!!}
 @endsection 

@@ -17,7 +17,7 @@
                 @endif
                 @if (isset($post->comment) && !empty($post->comment))
                     <div class="col-2">
-                        ตอบ {{$post->comment->count()}}
+                        ตอบ {{$post->comment_count}}
                     </div>
                 @endif
                 @if (isset($post->created_at) && !empty($post->created_at))

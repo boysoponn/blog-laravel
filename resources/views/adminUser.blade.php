@@ -2,7 +2,7 @@
 
 @section('content')
 @if($banList->isNotEmpty())
-    <h5>ผุ้ใช้งานที่หมดระยะเวลาระงับการใช้งาน</h5>
+    <h5>ผุ้ใช้งานที่เลยระยะเวลาระงับการใช้งาน</h5>
     @foreach ($banList as $ban)
         @if (isset($ban->time) && !empty($ban->time) && isset($ban->created_at) && !empty($ban->created_at))
             @if(($ban->time*60*24) < $ban->created_at->diffInMinutes())

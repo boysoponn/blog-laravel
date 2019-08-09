@@ -15,7 +15,7 @@ class CommentController extends Controller
             'user_id' => Auth::user()->user_id,
             'post_id' => $id
         ]);
-        $comment->upload()->sync($request->file);
+        $comment->upload()->sync($request->image);
         return redirect(route('post',['id' => $id]));
     }
     

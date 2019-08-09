@@ -18,9 +18,9 @@ class UploadController extends Controller
     public function upload(){
         return view('upload');
     }
-
+    
     public function uploadSuccess(UploadForm $request){
-        $fileGroup = $request->file;
+        $fileGroup = $request->image;
         foreach ($fileGroup as $key => $value) {
                 Upload::create([
                     'name' => $value->hashName(),
@@ -28,6 +28,16 @@ class UploadController extends Controller
                 ]);
                 $value->storeAs(Auth::user()->user_id,$value->hashName());
         }
-        return redirect()->back();
+    }
+
+    public function modelImageList()
+    {
+        $user_id = Auth::guard('web')->user()->user_id;
+        $imageList = Upload::where('user_id', $user_id)
+            ->latest()
+            ->get();
+        return view('component.image',[
+            'imageList' => $imageList,
+        ]);
     }
 }

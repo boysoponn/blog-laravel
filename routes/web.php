@@ -58,5 +58,7 @@ Route::name('likePostSuccess')->get('/like/post/success/{id}', 'LikeController@l
 Route::name('unlikePostSuccess')->get('/unlike/post/success/{id}', 'LikeController@unlikePostSuccess');
 Route::name('likeCommentSuccess')->get('/like/comment/success/{id}', 'LikeController@likeCommentSuccess');
 Route::name('unlikeCommentSuccess')->get('/unlike/comment/success/{id}', 'LikeController@unlikeCommentSuccess');
+Route::name('modelLikePost')->get('/model/like/post/{id}', 'LikeController@modelLikePost');
+Route::name('modelLikeComment')->get('/model/like/comment/{id}', 'LikeController@modelLikeComment');
 
-
+Route::name('modelImageList')->get('/model/imagelist', 'UploadController@modelImageList');

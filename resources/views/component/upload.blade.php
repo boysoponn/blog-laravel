@@ -8,16 +8,16 @@
             </button>
         </div>
         <div class="modal-body">
-            <form method="POST" id="upload" action="{{route('uploadSuccess')}}" enctype="multipart/form-data">
+            <form method="POST" id="uploadForm" action="{{route('uploadSuccess')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="input-group mb-3">
                     <div class="custom-file">
-                        <input name="file[]" id="upload" type="file" multiple="multiple">
+                        <input name="image[]" id="upload" type="file" multiple="multiple">
                         <div id="upload_prev"></div>    
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-secondary" type="submit">อัพโหลด</button>
+                    <button type="submit" class="btn btn-secondary">อัพโหลด</button>
                 </div>
             </form>
         </div>

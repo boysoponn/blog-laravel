@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class Like extends Model
 {
 
+    
     protected $table = 'like';
     protected $primaryKey = 'like_id';
     protected $fillable = [
         'user_id','likeable_id','likeable_type'
     ];
+    
     protected static function boot() {
         parent::boot();
         Relation::morphMap([
@@ -30,4 +32,5 @@ class Like extends Model
     {
         return $this->belongsTo('App\Models\User','user_id');
     }
+
 }

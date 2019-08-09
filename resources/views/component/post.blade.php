@@ -38,20 +38,18 @@
             @endif
             <hr>
             <div>
-                @if ($post->like()->count() === 0)
-                <p>เป็นคนแรกที่ถูกใจสิ่งนี้</p>
-                @else
-                    <p style="cursor: pointer" data-toggle="modal" data-target="#exampleModalCenter3">{{$post->like()->count()}}คน ถูกใจสิ่งนี้ </p>  
-                    @include('component.modelLike',['likeList'=> $post->like])
-                @endif 
-
                 @if (Auth::guard('web')->check())
-                    @if (isset($likePost) && !empty($likePost))
-                        <a href="{{route('unlikePostSuccess',['id' => $post->post_id])}}"><button type="button"  class="btn btn-primary">ถูกใจแล้ว</button></a>
+                    <i  style="color:red; font-size:20px; cursor: pointer;" class="likePost @if($likePost) fas @else far @endif fa-heart "></i>
+                    @if ($post->like_count > 0)
+                        <span id="textLikePost" style="cursor: pointer; font-size:16px;" data-toggle="modal" data-target="#exampleModalCenter3">{{$post->like_count}}</span>  
                     @else
-                        <a href="{{route('likePostSuccess',['id' => $post->post_id])}}"><button type="button"  class="btn btn-danger">ถูกใจ</button></a>
-                    @endif
+                        <span id="textLikePost" style="cursor: pointer; font-size:16px;" data-toggle="modal" data-target="#exampleModalCenter3">เป็นคนแรกที่ถูกใจสิ่งนี้</span> 
+                    @endif 
+                @else
+                    <i  style="color:red; font-size:20px;" class="fas fa-heart"></i>
+                    <span style="font-size:20px;">{{$post->like_count}}</span>  
                 @endif
+                
             </div>
         </div>
     </div>
